@@ -54,6 +54,7 @@
                         ->  max_posts_per_page: nothing more to say...
                 */
 
+                $filedir = '/your-directory-with-content';
                 $max_posts_per_page = 5;
 
                 /*
