@@ -1,43 +1,11 @@
 <html>
     <head>
         <title>2 + 2 = 5</title>
-        <style>
-
-            a {
-                color: #ffffff;
-                text-decoration: none;
-            }
-
-            #page {
-                font-family: monospace;
-                position: absolute;
-                width: 600;
-                left: 50%;
-                margin-left: -300;
-                background-color: #999999;
-            }
-
-            #blogpost {
-                margin-top: 1.2em;
-                margin-bottom: 0.5em;
-                margin-left: 0.5em;
-                margin-right: 0.5em;
-            }
-
-            #menuitem {
-                text-align: center;
-                width: 33%;
-            }
-
-            h3 {
-                font-size: 18;
-                margin-bottom: 0.3em;
-            }
-        </style>
+        <link href="blog.css" rel="stylesheet">
     </head>
     <body>
         <div id="page">
-            <h1 align="center">2 + 2 = 5 | Blog von fabi3550</h1>
+            <h1 align="center">Your blogtitle</h1>
             <table align="center" width="100%">
                 <tr>
                     <td id="menuitem"><a href="blog.php">Home</a></td>
@@ -48,77 +16,24 @@
 
             <!-- Content ab hier-->
             <?php
+                include('blog-functions.inc.php');
                 /*
                     DEFINITIONS:
                         ->  filedir: ressource directory on the server
                         ->  max_posts_per_page: nothing more to say...
+                        ->  posts: array with content + metadata
+                        ->  max_pages: number of pages which can be displayed
+                        ->  html: fancy arrows at the bottom of the main page
                 */
 
-                $filedir = '/your-directory-with-content';
+                $filedir = 'your-ressource-folder';
                 $max_posts_per_page = 5;
+                $posts = array();
 
-                /*
-                    getSubStrOf(buzzword1, buzzword2, content)
-                        ->  buzzword1 and buuzword2 are Tags within the content
-                        ->  returns a string with text within the buzzwords
-                */
-                function getSubstrOf($buzzword1, $buzzword2, $content) {
-                    $x = strlen($buzzword1);
-                    return substr($content,
-                            strpos($content, $buzzword1) + $x,
-                            strpos($content, $buzzword2) - (strpos($content, $buzzword1) + $x)
-                    );
+                //fill array with file data, if it isnt already
+                if (count($posts) == 0) {
+                    $posts = readFiles($filedir);
                 }
-
-                /*
-                    readFiles(filedir)
-                        ->  returns an array of arrays with blogposts
-                        ->  has just one parameter filedir, which is
-                            the ressource directory on the server
-                */
-                function readFiles($filedir) {
-
-                    $handle = opendir($filedir);
-                    $blogposts = array();
-                    $countfiles = 0;
-
-                    while ($filename = readdir($handle)) {
-
-                        if (strlen($filename) > 2) {
-                            $filecontent = file_get_contents($filedir.'/'.$filename);
-
-                            $blogpost = array (
-                                'ownid'    => $countfiles,
-                                'filename' => $filename,
-                                'title'    => getSubstrOf('[Title]', '[/Title]', $filecontent),
-                                'author'   => getSubstrOf('[Author]', '[/Author]', $filecontent),
-                                'date'     => date("d.m.Y", strtotime(getSubstrOf('[Date]', '[/Date]', $filecontent))),
-                                'content'  => getSubstrOf('[Content]', '[/Content]', $filecontent)
-                            );
-
-                            $blogposts[$countfiles] = $blogpost;
-                            $countfiles++;
-                        }
-                    }
-
-                    return $blogposts;
-                }
-
-                /*
-                    printBlogPost(blogpost)
-                        -> returns a formatted string representing a blog post
-                */
-                function printBlogPost($blogpost) {
-                    $html = '<div id="blogpost">';
-                    $html = $html.'<h3><a href="blog.php?articleid='.$blogpost['ownid'].'">'.$blogpost['title'].'</a></h3>';
-                    $html = $html.'<i>Ver&ouml;ffentlicht von '.$blogpost['author'].' am '.$blogpost['date'].'</i>';
-                    $html = $html.'<p>'.$blogpost['content'].'</p><br>';
-                    $html = $html.'</div>';
-                    return $html;
-                }
-
-                //fill array with file data
-                $posts = readFiles($filedir);
 
                 $max_pages = ceil(count($posts) / $max_posts_per_page) - 1;
                 $html = '';

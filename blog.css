@@ -1,0 +1,30 @@
+a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+#page {
+    font-family: monospace;
+    position: absolute;
+    width: 600;
+    left: 50%;
+    margin-left: -300;
+    background-color: #999999;
+}
+
+#blogpost {
+    margin-top: 1.2em;
+    margin-bottom: 0.5em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
+
+#menuitem {
+    text-align: center;
+    width: 33%;
+}
+
+h3 {
+    font-size: 18;
+    margin-bottom: 0.3em;
+}
