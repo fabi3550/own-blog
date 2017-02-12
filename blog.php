@@ -29,12 +29,7 @@
                 $filedir = 'your-ressource-folder';
                 $max_posts_per_page = 5;
                 $posts = array();
-
-                //fill array with file data, if it isnt already
-                if (count($posts) == 0) {
-                    $posts = readFiles($filedir);
-                }
-
+                $posts = readFiles($filedir);
                 $max_pages = ceil(count($posts) / $max_posts_per_page) - 1;
                 $html = '';
 
@@ -47,7 +42,7 @@
 
                     if (($blogpostid >= 0) && ($blogpostid < count($posts))) {
                         echo printBlogPost($posts[$blogpostid]);
-                        echo '<a href="blog.php"><-zur&uuml;ck</a>';
+                        echo '<a href="blog.php?page='.getPageOf($blogpostid, $max_posts_per_page, $max_pages).'"><-zur&uuml;ck</a>';
                     }
                 }
 
@@ -56,7 +51,6 @@
 
                     rsort($posts);
 
-                    /* TODO String/ Int Problematik */
                     if (isset($_GET['page'])) {
                         $page = $_GET['page'];
                     }
@@ -79,7 +73,7 @@
                         }
 
                         if ($page < $max_pages) {
-                            $html = $html.'<td><a href="blog.php?page='.++$page.'"> >> </a></td>';
+                            $html = $html.'<td><a href="blog.php?page='.$page++.'"> >> </a></td>';
                         }
 
                         $html = $html.'</tr></table>';

@@ -29,13 +29,13 @@ function readFiles($filedir) {
         if (strlen($filename) > 2) {
             $filecontent = file_get_contents($filedir.'/'.$filename);
 
-            $blogpost = array (
-                'ownid'    => $countfiles,
-                'filename' => $filename,
-                'title'    => getSubstrOf('[Title]', '[/Title]', $filecontent),
-                'author'   => getSubstrOf('[Author]', '[/Author]', $filecontent),
-                'date'     => date("d.m.Y", strtotime(getSubstrOf('[Date]', '[/Date]', $filecontent))),
-                'content'  => getSubstrOf('[Content]', '[/Content]', $filecontent)
+            $blogpost = new BlogPost(
+              $countfiles,
+              $filename,
+              getSubstrOf('[Title]', '[/Title]', $filecontent),
+              getSubstrOf('[Author]', '[/Author]', $filecontent),
+              date("d.m.Y", strtotime(getSubstrOf('[Date]', '[/Date]', $filecontent))),
+              getSubstrOf('[Content]', '[/Content]', $filecontent)
             );
 
             $blogposts[$countfiles] = $blogpost;
@@ -57,5 +57,23 @@ function printBlogPost($blogpost) {
     $html = $html.'<p>'.$blogpost['content'].'</p><br>';
     $html = $html.'</div>';
     return $html;
+}
+
+/*
+  getPageOf(blogpostid)
+      -> return the blog-page which contains this post (blogpostid)
+*/
+function getPageOf($blogpostid, $posts_per_page, $max_pages) {
+    $page = 0;
+
+    if ($blogpostid % $posts_per_page) == 0 {
+        $page = $blogpostid / $posts_per_page;
+    }
+
+    else {
+        $page = ceil($blogpostid / $posts_per_page);
+    }
+
+    return $max_pages - $page;
 }
 ?>
