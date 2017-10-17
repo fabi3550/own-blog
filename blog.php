@@ -16,7 +16,8 @@
 
             <!-- Content ab hier-->
             <?php
-                include('blog-functions.inc.php');
+              include('blog-functions.inc.php');
+
                 /*
                     DEFINITIONS:
                         ->  filedir: ressource directory on the server
@@ -26,14 +27,10 @@
                         ->  html: fancy arrows at the bottom of the main page
                 */
 
-                $filedir = 'your-ressource-folder';
-                $max_posts_per_page = 5;
-                $posts = array();
 
-                //fill array with file data, if it isnt already
-                if (count($posts) == 0) {
-                    $posts = readFiles($filedir);
-                }
+                $filedir = '/var/www/html/res';
+                $max_posts_per_page = 5;
+                $posts = readJSONFiles($filedir);
 
                 $max_pages = ceil(count($posts) / $max_posts_per_page) - 1;
                 $html = '';
@@ -41,12 +38,13 @@
                 //set current page to 0 per default
                 $page = 0;
 
+
                 //visitor has direct link to blogpost
                 if (isset($_GET['articleid'])) {
                     $blogpostid = $_GET['articleid'];
 
                     if (($blogpostid >= 0) && ($blogpostid < count($posts))) {
-                        echo printBlogPost($posts[$blogpostid]);
+                        echo printJSONBlogPost($posts[$blogpostid]);
                         echo '<a href="blog.php"><-zur&uuml;ck</a>';
                     }
                 }
@@ -54,7 +52,7 @@
                 //visitor has page id or nothing
                 else {
 
-                    rsort($posts);
+                    //rsort($posts);
 
                     /* TODO String/ Int Problematik */
                     if (isset($_GET['page'])) {
@@ -67,7 +65,7 @@
                         //shows blogposts from array
                         for ($i = 0; $i < $max_posts_per_page; $i++) {
                             if (array_key_exists($page * $max_posts_per_page + $i, $posts)) {
-                                echo printBlogPost($posts[$page * $max_posts_per_page + $i]);
+                                echo printJSONBlogPost($posts[$page * $max_posts_per_page + $i]);
                             }
                         }
 
