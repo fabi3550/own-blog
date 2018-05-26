@@ -11,6 +11,7 @@
                     <td id="menuitem"><a href="blog.php">Home</a></td>
                     <td id="menuitem"><a href="blog.php?page=ueber">&Uuml;ber</a></td>
                     <td id="menuitem"><a href="blog.php?page=impressum">Impressum</a></td>
+                    <td id="menuitem"><a href="blog.php?page=datenschutz">Datenschutz</a></td>
                 </tr>
             </table>
 
@@ -52,7 +53,7 @@
                 //visitor has page id or nothing
                 else {
 
-                    //rsort($posts);
+                    //usort($posts, "cmpdate")
 
                     /* TODO String/ Int Problematik */
                     if (isset($_GET['page'])) {
@@ -86,7 +87,7 @@
 
                     else {
 
-                        if (($page == 'ueber') || ($page == 'impressum')) {
+                        if (($page == 'ueber') || ($page == 'impressum') || ($page == 'datenschutz')) {
                             include($page.'.html');
                         }
 

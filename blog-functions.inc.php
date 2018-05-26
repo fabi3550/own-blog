@@ -1,5 +1,17 @@
 <?php
 include('blogpost.php');
+
+function cmpdate($date1, $date2) {
+
+  $format = 'd.m.Y G:i';
+  $a = date_create_from_format($format, $date1);
+  $a = date_create_from_format($format, $date2);
+
+  if ($a == $b) {
+       return 0;
+   }
+   return ($a < $b) ? -1 : 1;
+}
 /*
     getSubStrOf(buzzword1, buzzword2, content)
         ->  buzzword1 and buuzword2 are Tags within the content
