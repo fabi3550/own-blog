@@ -34,7 +34,7 @@
     }
 
     function getReleaseDate() {
-      return date("d.m.Y", strtotime($this->releasedate));
+      return $this->releasedate;
     }
 
     function getContent() {

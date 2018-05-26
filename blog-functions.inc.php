@@ -1,29 +1,27 @@
 <?php
 include('blogpost.php');
 
-function cmpdate($date1, $date2) {
-
-  $format = 'd.m.Y G:i';
-  $a = date_create_from_format($format, $date1);
-  $a = date_create_from_format($format, $date2);
-
-  if ($a == $b) {
-       return 0;
-   }
-   return ($a < $b) ? -1 : 1;
-}
 /*
-    getSubStrOf(buzzword1, buzzword2, content)
-        ->  buzzword1 and buuzword2 are Tags within the content
-        ->  returns a string with text within the buzzwords
+    cmpdate(post1, post2)
+        -> returns a sort integer
+        -> delivers sorting critera for usort, is a dependency for usort
 */
-function getSubstrOf($buzzword1, $buzzword2, $content) {
-    $x = strlen($buzzword1);
-    return substr($content,
-            strpos($content, $buzzword1) + $x,
-            strpos($content, $buzzword2) - (strpos($content, $buzzword1) + $x)
-    );
+
+function cmpdate($post1, $post2) {
+
+  $r = NULL;
+
+  $adate = call_user_func(array($post1, "getReleaseDate"));
+  $bdate = call_user_func(array($post2, "getReleaseDate"));
+
+  if ($adate == $bdate) {
+       $r = 0;
+  }
+
+  $r = ($adate < $bdate) ? 1 : -1;
+  return $r;
 }
+
 
 /*
     readJSONFiles(filedir)
@@ -31,6 +29,7 @@ function getSubstrOf($buzzword1, $buzzword2, $content) {
         -> input parameter $filedir points to local
            ressource folder
 */
+
 function readJSONFiles($filedir) {
 
   $handle = opendir($filedir);
@@ -61,38 +60,10 @@ function readJSONFiles($filedir) {
 }
 
 /*
-    readFiles(filedir)
-        ->  returns an array of arrays with blogposts
-        ->  has just one parameter filedir, which is
-            the ressource directory on the server
+    printJSONBlogPost(blogpost)
+        -> returns a formatted string representing a blog post
+
 */
-function readFiles($filedir) {
-
-    $handle = opendir($filedir);
-    $blogposts = array();
-    $countfiles = 0;
-
-    while ($filename = readdir($handle)) {
-
-        if (strlen($filename) > 2) {
-            $filecontent = file_get_contents($filedir.'/'.$filename);
-
-            $blogpost = array (
-                'ownid'    => $countfiles,
-                'filename' => $filename,
-                'title'    => getSubstrOf('[Title]', '[/Title]', $filecontent),
-                'author'   => getSubstrOf('[Author]', '[/Author]', $filecontent),
-                'date'     => date("d.m.Y", strtotime(getSubstrOf('[Date]', '[/Date]', $filecontent))),
-                'content'  => getSubstrOf('[Content]', '[/Content]', $filecontent)
-            );
-
-            $blogposts[$countfiles] = $blogpost;
-            $countfiles++;
-        }
-    }
-
-    return $blogposts;
-}
 
 function printJSONBlogPost($blogpost) {
 
@@ -105,16 +76,4 @@ function printJSONBlogPost($blogpost) {
 
 }
 
-/*
-    printBlogPost(blogpost)
-        -> returns a formatted string representing a blog post
-*/
-function printBlogPost($blogpost) {
-    $html = '<div id="blogpost">';
-    $html = $html.'<h3><a href="blog.php?articleid='.$blogpost['ownid'].'">'.$blogpost['title'].'</a></h3>';
-    $html = $html.'<i>Ver&ouml;ffentlicht von '.$blogpost['author'].' am '.$blogpost['date'].'</i>';
-    $html = $html.'<p>'.$blogpost['content'].'</p><br>';
-    $html = $html.'</div>';
-    return $html;
-}
 ?>
