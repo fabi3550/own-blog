@@ -53,7 +53,7 @@
                 //visitor has page id or nothing
                 else {
 
-                    //usort($posts, "cmpdate")
+                    usort($posts, "cmpdate")
 
                     /* TODO String/ Int Problematik */
                     if (isset($_GET['page'])) {
