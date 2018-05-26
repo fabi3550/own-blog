@@ -1,11 +1,42 @@
 <html>
     <head>
         <title>2 + 2 = 5</title>
-        <link href="blog.css" rel="stylesheet">
+        <style>
+            a {
+                color: #ffffff;
+                text-decoration: none;
+            }
+
+            #page {
+                font-family: monospace;
+                position: absolute;
+                width: 600;
+                left: 50%;
+                margin-left: -300;
+                background-color: #999999;
+            }
+
+            #blogpost {
+                margin-top: 1.2em;
+                margin-bottom: 0.5em;
+                margin-left: 0.5em;
+                margin-right: 0.5em;
+            }
+
+            #menuitem {
+                text-align: center;
+                width: 25%;
+            }
+
+            h3 {
+                font-size: 18;
+                margin-bottom: 0.3em;
+            }
+        </style>
     </head>
     <body>
         <div id="page">
-            <h1 align="center">Your blogtitle</h1>
+            <h1 align="center">your blog title here</h1>
             <table align="center" width="100%">
                 <tr>
                     <td id="menuitem"><a href="blog.php">Home</a></td>
@@ -17,6 +48,7 @@
 
             <!-- Content ab hier-->
             <?php
+
               include('blog-functions.inc.php');
 
                 /*
@@ -29,7 +61,7 @@
                 */
 
 
-                $filedir = '/var/www/html/res';
+                $filedir = '/your/json/src/files/here';
                 $max_posts_per_page = 5;
                 $posts = readJSONFiles($filedir);
 
@@ -38,7 +70,6 @@
 
                 //set current page to 0 per default
                 $page = 0;
-
 
                 //visitor has direct link to blogpost
                 if (isset($_GET['articleid'])) {
@@ -53,7 +84,7 @@
                 //visitor has page id or nothing
                 else {
 
-                    usort($posts, "cmpdate")
+                    usort($posts, "cmpdate");
 
                     /* TODO String/ Int Problematik */
                     if (isset($_GET['page'])) {
