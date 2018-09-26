@@ -61,7 +61,7 @@
                 */
 
 
-                $filedir = '/your/json/src/files/here';
+                $filedir = '../json';
                 $max_posts_per_page = 5;
                 $posts = readJSONFiles($filedir);
 

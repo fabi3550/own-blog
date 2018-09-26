@@ -7,7 +7,8 @@
                   $author,
                   $email,
                   $releasedate,
-                  $content)
+                  $content,
+                  $tags)
     {
       $this->ownid = $ownid;
       $this->title = $title;
@@ -15,6 +16,7 @@
       $this->email = $email;
       $this->releasedate = $releasedate;
       $this->content = $content;
+      $this->tags = $tags;
     }
 
     function getOwnId() {
@@ -39,6 +41,10 @@
 
     function getContent() {
       return $this->content;
+    }
+
+    function getTags() {
+      return $this->tags;
     }
   }
 ?>

@@ -48,7 +48,8 @@ function readJSONFiles($filedir) {
         $json_a->{'author'},
         $json_a->{'email'},
         $json_a->{'release-date'},
-        $json_a->{'content'}
+        $json_a->{'content'},
+        $json_a->{'tags'}
       );
 
       $blogposts[$countfiles] = $blogpost;
@@ -67,10 +68,19 @@ function readJSONFiles($filedir) {
 
 function printJSONBlogPost($blogpost) {
 
+  $tags = '';
+
+  foreach ($blogpost->getTags() as $tag) {
+      $tags = $tags.'<a href="blog.php?tag='.str_replace(' ', '-', $tag).'">'.$tag.', </a>';
+  }
+
+  $tags = substr($tags, 0, -2);
+
   $html = '<div id="blogpost">';
   $html = $html.'<h3><a href="blog.php?articleid='.$blogpost->getOwnId().'">'.$blogpost->getTitle().'</a></h3>';
   $html = $html.'<i>Ver&ouml;ffentlicht von '.$blogpost->getAuthor().' am '.$blogpost->getReleaseDate().'</i>';
-  $html = $html.'<p>'.$blogpost->getContent().'</p><br>';
+  $html = $html.'<p>'.$blogpost->getContent().'</p>';
+  $html = $html.'<p>Tags: '.$tags.'</p>';
   $html = $html.'</div>';
   return $html;
 
