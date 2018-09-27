@@ -70,11 +70,23 @@ function printJSONBlogPost($blogpost) {
 
   $tags = '';
 
-  foreach ($blogpost->getTags() as $tag) {
-      $tags = $tags.'<a href="blog.php?tag='.str_replace(' ', '-', $tag).'">'.$tag.', </a>';
+  for ($i = 0; $i < count($blogpost->getTags()); $i++) {
+
+    $tag = $blogpost->getTags()[$i];
+
+    if ($i < count($blogpost->getTags()) -1) {
+      $tags = $tags.'<a href="blog.php?tag='.urlencode($tag).'">'.$tag.', </a>';
+    }
+
+    else {
+      $tags = $tags.'<a href="blog.php?tag='.urlencode($tag).'">'.$tag.'</a>';
+    }
   }
 
-  $tags = substr($tags, 0, -2);
+/*  foreach ($blogpost->getTags() as $tag) {
+      $tags = $tags.'<a href="blog.php?tag='.str_replace(' ', '-', $tag).'">'.$tag.', </a>';
+  }
+*/
 
   $html = '<div id="blogpost">';
   $html = $html.'<h3><a href="blog.php?articleid='.$blogpost->getOwnId().'">'.$blogpost->getTitle().'</a></h3>';
