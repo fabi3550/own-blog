@@ -60,18 +60,16 @@
                         ->  html: fancy arrows at the bottom of the main page
                 */
 
-
                 $filedir = '../json';
                 $max_posts_per_page = 5;
                 $posts = readJSONFiles($filedir);
-
                 $max_pages = ceil(count($posts) / $max_posts_per_page) - 1;
                 $html = '';
 
                 //set current page to 0 per default
                 $page = 0;
 
-                //visitor has direct link to blogpost
+                /* user has an articleid/direct link */
                 if (isset($_GET['articleid'])) {
                     $blogpostid = $_GET['articleid'];
 
@@ -81,12 +79,17 @@
                     }
                 }
 
-                //visitor has page id or nothing
+                /* user has a pageid and/or a tagid */
                 else {
 
                     usort($posts, "cmpdate");
 
-                    /* TODO String/ Int Problematik */
+                    if (isset($_GET['tag'])) {
+                        $category = $_GET['tag'];
+                        $posts = readJSONFiles($filedir, $tag = urldecode($category));
+                        $max_pages = ceil(count($posts) / $max_posts_per_page) - 1;
+                    }
+
                     if (isset($_GET['page'])) {
                         $page = $_GET['page'];
                     }
@@ -104,12 +107,16 @@
                         //navigation arrows at the bottom, dependent from current page
                         $html = $html.'<table align="center"><tr>';
 
+                        //echo $page." von ".$max_pages;
+
                         if ($page > 0) {
-                            $html = $html.'<td><a href="blog.php?page='.--$page.'"> << </a></td>';
+                            $backward = $page - 1;
+                            $html = $html.'<td><a href="blog.php?page='.$backward.'"> << </a></td>';
                         }
 
                         if ($page < $max_pages) {
-                            $html = $html.'<td><a href="blog.php?page='.++$page.'"> >> </a></td>';
+                            $forward = $page + 1;
+                            $html = $html.'<td><a href="blog.php?page='.$forward.'"> >> </a></td>';
                         }
 
                         $html = $html.'</tr></table>';

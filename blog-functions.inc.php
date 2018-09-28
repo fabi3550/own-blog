@@ -30,8 +30,8 @@ function cmpdate($post1, $post2) {
            ressource folder
 */
 
-function readJSONFiles($filedir) {
-
+function readJSONFiles($filedir, $tag = null) {
+  
   $handle = opendir($filedir);
   $blogposts = array();
   $countfiles = 0;
@@ -52,8 +52,17 @@ function readJSONFiles($filedir) {
         $json_a->{'tags'}
       );
 
-      $blogposts[$countfiles] = $blogpost;
-      $countfiles++;
+      if (isset($tag)) {
+        if (in_array($tag, $json_a->{'tags'})) {
+          $blogposts[$countfiles] = $blogpost;
+          $countfiles++;
+        }
+      }
+
+      else {
+        $blogposts[$countfiles] = $blogpost;
+        $countfiles++;
+      }
     }
   }
 
