@@ -105,11 +105,13 @@
                         $html = $html.'<table align="center"><tr>';
 
                         if ($page > 0) {
-                            $html = $html.'<td><a href="blog.php?page='.--$page.'"> << </a></td>';
+                            $backward = $page - 1;
+                            $html = $html.'<td><a href="blog.php?page='.$backward.'"> << </a></td>';
                         }
 
                         if ($page < $max_pages) {
-                            $html = $html.'<td><a href="blog.php?page='.++$page.'"> >> </a></td>';
+                            $forward = $page + 1;
+                            $html = $html.'<td><a href="blog.php?page='.$forward.'"> >> </a></td>';
                         }
 
                         $html = $html.'</tr></table>';
